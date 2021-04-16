@@ -36,9 +36,31 @@ module Enumerable
     puts a
     a
   end
+
+  def my_any?(pattern = Integer)
+    booltest = false
+    return false if length.zero?
+
+    if block_given? == false && pattern == Integer
+
+      booltest = true
+    else
+
+      my_each do |k|
+        booltest = true if k.instance_of?(pattern) || yield(k)
+      end
+
+    end
+
+    booltest
+  end
 end
 
 [1, 2, 3, 4, 5].my_select(&:even?)
+print(%w[ant bear cat].my_any? { |word| word.length >= 5 })
+[nil, true, 99].my_any?(Integer)
+[nil, true, 99].my_any?
+[].my_any?
 # hash = {}
 # %w[cat dog wombat].my_each_with_index do |item, index|
 #  hash[item] = index
