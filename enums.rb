@@ -1,5 +1,3 @@
-
-# YS
 module Enumerable
   #:nodoc:
   def my_each
