@@ -80,11 +80,28 @@ module Enumerable
     end
     true
   end
+
+  def my_count(c = nil)
+    count=0
+    my_each do |k|
+        count+=1 if(block_given? && yield(k))
+        count+=1 if(c && k==c)
+    end
+
+    return self.length if(!block_given? && c==nil)
+    count
+
+  end
 end
 
-print(%w[ant bear cat].my_none? { |word| word.length >= 5 })
-print([1, 42].my_none?(Float))
-print([nil].my_none?)
+ary = [1, 2, 4, 2]
+print(ary.my_count)               #=> 4
+print(ary.my_count(2))            #=> 2
+print(ary.my_count{ |x| x%2==0 }) 
+
+#print(%w[ant bear cat].my_none? { |word| word.length >= 5 })
+#print([1, 42].my_none?(Float))
+#print([nil].my_none?)
 # print(%w[ant bear cat].my_all?(/t/) )
 # print([1, 2i, 3.14].my_all?(Numeric))
 # print([nil, true, 99].my_all?)
