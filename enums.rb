@@ -112,10 +112,16 @@ module Enumerable
   end
 end
 
-longest = %w[cat sheep bear].my_inject do |memo, word|
-  memo.length > word.length ? memo : word
+def multiply_els(arr)
+  arr.my_inject(1) { |product, n| product * n }
 end
-print(longest)
+
+print(multiply_els([2, 4, 5]))
+
+# longest = %w[cat sheep bear].my_inject do |memo, word|
+# memo.length > word.length ? memo : word
+# end
+# print(longest)
 # print((5..10).my_inject(1) { |product, n| product * n} )
 # print((1..4).my_map { |i| i * i })
 # ary = [1, 2, 4, 2]
