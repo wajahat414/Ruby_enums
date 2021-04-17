@@ -92,12 +92,23 @@ module Enumerable
 
     count
   end
+
+  def my_map
+    arr = to_a
+    k = 0
+    my_each do |i|
+      arr[k] = yield(i) if block_given?
+      k += 1
+    end
+    arr
+  end
 end
 
-ary = [1, 2, 4, 2]
-print(ary.my_count)               #=> 4
-print(ary.my_count(2))            #=> 2
-print(ary.my_count(&:even?))
+print((1..4).my_map { |i| i * i })
+# ary = [1, 2, 4, 2]
+# print(ary.my_count)               #=> 4
+# print(ary.my_count(2))            #=> 2
+# print(ary.my_count(&:even?))
 
 # print(%w[ant bear cat].my_none? { |word| word.length >= 5 })
 # print([1, 42].my_none?(Float))
