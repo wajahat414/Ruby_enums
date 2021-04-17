@@ -1,24 +1,31 @@
+# frozen_string_literal: true
+
+# module enumerable
 module Enumerable
   #:nodoc:
-  def my_each
-    i = 0
-    while i < to_a.length
+  def my_each(index = 0)
+    return to_enum unless block_given?
+
+    while index < to_a.length
       if instance_of?(Hash)
-        yield(keys[i], values[i])
+        yield(keys[index], values[index])
       else
-        yield(to_a[i])
+        yield(to_a[index])
       end
-      i += 1
+      index += 1
     end
+    self
   end
 
   def my_each_with_index
-    puts self.class
+    return to_enum unless block_given?
+
     i = 0
-    while i < length
-      yield(self[i], i)
+    while i < to_a.length
+      yield(to_a[i], i)
       i += 1
     end
+    self
   end
 
   def my_select
@@ -117,6 +124,23 @@ def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
 
+a = { cat: 1, bat: 33, fat: 99 }
+# enum=a.my_each {|k,v| puts "#{k}:#{v}"}
+
+hash = {}
+a.each_with_index do |item, index|
+  hash[item] = index
+end
+puts hash
+
+# print enum
+# a = (1..7)
+# range = a.each
+# print range
+# a = [1, 2, 3, 4]
+# array=a.my_each { |k| puts k }
+# print array
+
 # print(multiply_els([2, 4, 5]))
 
 # longest = %w[cat sheep bear].my_inject do |memo, word|
@@ -124,9 +148,9 @@ end
 # end
 # print(longest)
 # print((5..10).my_inject(1) { |product, n| product * n} )
-my_proc = proc { |i| i * i }
-print((1..4).my_map(my_proc))
-print((1..4).my_map { |i| i * i })
+# my_proc = proc { |i| i * i }
+# print((1..4).my_map(my_proc))
+# print((1..4).my_map { |i| i * i })
 
 # ary = [1, 2, 4, 2]
 # print(ary.my_count)               #=> 4
@@ -140,14 +164,3 @@ print((1..4).my_map { |i| i * i })
 # print([1, 2i, 3.14].my_all?(Numeric))
 # print([nil, true, 99].my_all?)
 # print([].my_all?)
-# hash = {}
-# %w[cat dog wombat].my_each_with_index do |item, index|
-#  hash[item] = index
-# end
-# puts hash
-# a = { cat: 1, bat: 33, fat: 99 }
-# a.my_each { |k, v| puts("#{k}:#{v}") }
-# a=(1..7)
-# a.my_each {|k| puts k}
-# a = [1, 2, 3, 4]
-# a.my_each { |k| puts k }
