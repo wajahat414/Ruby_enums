@@ -54,13 +54,26 @@ module Enumerable
 
     booltest
   end
+
+  def my_all?(_pattern = Integer)
+    my_each do |k|
+      return false if [nil, false].include?(k)
+
+      if block_given?
+        return false unless yield(k)
+      elsif k.instance_of?(Integer) || k.instance_of?(Complex) || k.instance_of?(Float)
+        return true
+      end
+    end
+    true
+  end
 end
 
-[1, 2, 3, 4, 5].my_select(&:even?)
-print(%w[ant bear cat].my_any? { |word| word.length >= 5 })
-[nil, true, 99].my_any?(Integer)
-[nil, true, 99].my_any?
-[].my_any?
+print(%w[ant bear cat].my_all? { |word| word.length >= 4 })
+# print(%w[ant bear cat].my_all?(/t/) )
+print([1, 2i, 3.14].my_all?(Numeric))
+print([nil, true, 99].my_all?)
+print([].my_all?)
 # hash = {}
 # %w[cat dog wombat].my_each_with_index do |item, index|
 #  hash[item] = index
