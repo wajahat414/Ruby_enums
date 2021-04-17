@@ -39,7 +39,7 @@
 (Select source)
 ->Save
 
-The project will be deployed to https://<wajahat414>.github.io/<HTML-CSS-Capstone-Project>/
+The project will be deployed to https://<wajahat414>.github.io/<>/
 
 ## Authors
 
@@ -53,7 +53,7 @@ The project will be deployed to https://<wajahat414>.github.io/<HTML-CSS-Capston
 
 Contributions, issues, and feature requests are welcome!
 
-Feel free to check the [issues page](https://github.com/wajahat414/HTML-CSS-Capstone-Project/issues).
+Feel free to check the [issues page](https://github.com/wajahat414/Ruby_enums/issues).
 
 ## Show your support
 
