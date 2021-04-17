@@ -102,9 +102,22 @@ module Enumerable
     end
     arr
   end
+
+  def my_inject(mem = 0)
+    my_each do |k|
+      mem = mem.to_s if k.instance_of?(String)
+      mem = yield(mem, k)
+    end
+    mem
+  end
 end
 
-print((1..4).my_map { |i| i * i })
+longest = %w[cat sheep bear].my_inject do |memo, word|
+  memo.length > word.length ? memo : word
+end
+print(longest)
+# print((5..10).my_inject(1) { |product, n| product * n} )
+# print((1..4).my_map { |i| i * i })
 # ary = [1, 2, 4, 2]
 # print(ary.my_count)               #=> 4
 # print(ary.my_count(2))            #=> 2
