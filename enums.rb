@@ -93,16 +93,6 @@ module Enumerable
     count
   end
 
-  def my_map
-    arr = to_a
-    k = 0
-    my_each do |i|
-      arr[k] = yield(i) if block_given?
-      k += 1
-    end
-    arr
-  end
-
   def my_inject(mem = 0)
     my_each do |k|
       mem = mem.to_s if k.instance_of?(String)
@@ -110,20 +100,37 @@ module Enumerable
     end
     mem
   end
+
+  def my_map(my_proc = nil, index = 0)
+    arr = to_a
+    my_each do |i|
+      if my_proc
+        arr[index] = my_proc.call(i)
+      elsif block_given?
+        arr[index] = yield(i)
+      end
+
+      index += 1
+    end
+    arr
+  end
 end
 
 def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
 
-print(multiply_els([2, 4, 5]))
+# print(multiply_els([2, 4, 5]))
 
 # longest = %w[cat sheep bear].my_inject do |memo, word|
 # memo.length > word.length ? memo : word
 # end
 # print(longest)
 # print((5..10).my_inject(1) { |product, n| product * n} )
-# print((1..4).my_map { |i| i * i })
+my_proc = proc { |i| i * i }
+print((1..4).my_map(my_proc))
+print((1..4).my_map { |i| i * i })
+
 # ary = [1, 2, 4, 2]
 # print(ary.my_count)               #=> 4
 # print(ary.my_count(2))            #=> 2
