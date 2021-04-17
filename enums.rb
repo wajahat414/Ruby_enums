@@ -67,13 +67,28 @@ module Enumerable
     end
     true
   end
+
+  def my_none?(pattern = Integer)
+    my_each do |k|
+      return false if k == true
+
+      if block_given?
+        return false if yield(k)
+      elsif k.instance_of?(pattern)
+        return false
+      end
+    end
+    true
+  end
 end
 
-print(%w[ant bear cat].my_all? { |word| word.length >= 4 })
+print(%w[ant bear cat].my_none? { |word| word.length >= 5 })
+print([1, 42].my_none?(Float))
+print([nil].my_none?)
 # print(%w[ant bear cat].my_all?(/t/) )
-print([1, 2i, 3.14].my_all?(Numeric))
-print([nil, true, 99].my_all?)
-print([].my_all?)
+# print([1, 2i, 3.14].my_all?(Numeric))
+# print([nil, true, 99].my_all?)
+# print([].my_all?)
 # hash = {}
 # %w[cat dog wombat].my_each_with_index do |item, index|
 #  hash[item] = index
