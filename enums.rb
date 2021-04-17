@@ -1,6 +1,5 @@
-# frozen_string_literal: true
 
-# Your comment
+# YS
 module Enumerable
   #:nodoc:
   def my_each
