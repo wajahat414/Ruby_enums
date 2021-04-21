@@ -17,56 +17,65 @@ module Enumerable
     self
   end
 
-  def my_each_with_index
+  def my_each_with_index(index = 0)
     return to_enum unless block_given?
 
-    i = 0
-    while i < to_a.length
-      yield(to_a[i], i)
-      i += 1
+    while index < to_a.length
+      yield(to_a[index], index)
+      index += 1
     end
     self
   end
 
-  def my_select
-    a = []
-    i = 0
+  def my_select(arr = [], index = 0)
+    return to_enum unless block_given?
+
     my_each do |k|
       if yield(k)
-        a[i] = k
-        i += 1
+        arr[i] = k
+        index += 1
       end
     end
-    puts a
-    a
+    arr
   end
 
-  def my_any?(pattern = Integer)
-    booltest = false
+  def my_any?(pattern = Integer, bar: false)
     return false if length.zero?
 
     if block_given? == false && pattern == Integer
 
-      booltest = true
+      bar = true
     else
 
       my_each do |k|
-        booltest = true if k.instance_of?(pattern) || yield(k)
+        bar = true if k.instance_of?(pattern) || yield(k)
       end
 
     end
 
-    booltest
+    bar
   end
 
-  def my_all?(_pattern = Integer)
+  def check?(value, pattern, flag = nil)
+    if flag
+      return true if value.instance_of?(pattern)
+      return true if value.instance_of?(Complex) || value.instance_of?(Float) || value.instance_of?(Integer)
+    elsif value.to_s.match(pattern.to_s)
+      return true
+    end
+
+    false
+  end
+
+  def my_all?(pattern: false, flag: false)
     my_each do |k|
-      return false if [nil, false].include?(k)
+      return false unless k
 
       if block_given?
         return false unless yield(k)
-      elsif k.instance_of?(Integer) || k.instance_of?(Complex) || k.instance_of?(Float)
-        return true
+      elsif (flag = [Integer, Float, String, Numeric].include?(pattern)) || pattern.to_s.include?('?')
+        return false unless check?(flag, pattern, x)
+
       end
     end
     true
@@ -85,8 +94,7 @@ module Enumerable
     true
   end
 
-  def my_count(comp = nil)
-    count = 0
+  def my_count(comp = nil, count = 0)
     my_each do |k|
       count += 1 if block_given? && yield(k)
       count += 1 if comp && k == comp
@@ -124,14 +132,22 @@ def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
 
-a = { cat: 1, bat: 33, fat: 99 }
+x = %w[ant bear cat].all? { |word| word.length >= 3 } #=> true
+y = %w[ant bear cat].all? { |word| word.length >= 4 } #=> false
+z = %w[ant bear cat].all?(/t/)                        #=> false
+a = [1, 2i, 3.14].all?(Numeric)                       #=> true
+b = [nil, true, 99].all?                              #=> false
+c = [].all?
+print x, y, z, a, b, c
+
+# a = { cat: 1, bat: 33, fat: 99 }
 # enum=a.my_each {|k,v| puts "#{k}:#{v}"}
 
-hash = {}
-a.each_with_index do |item, index|
-  hash[item] = index
-end
-puts hash
+# hash = {}
+# 2a.each_with_index do |item, index|
+#  hash[item] = index
+# end
+# puts hash
 
 # print enum
 # a = (1..7)
@@ -160,7 +176,3 @@ puts hash
 # print(%w[ant bear cat].my_none? { |word| word.length >= 5 })
 # print([1, 42].my_none?(Float))
 # print([nil].my_none?)
-# print(%w[ant bear cat].my_all?(/t/) )
-# print([1, 2i, 3.14].my_all?(Numeric))
-# print([nil, true, 99].my_all?)
-# print([].my_all?)
