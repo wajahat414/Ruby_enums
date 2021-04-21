@@ -76,13 +76,13 @@ module Enumerable
     false
   end
 
-  def my_none?(pattern = Integer)
+  def my_none?(pattern = nil, flag: false)
     my_each do |k|
-      return false if k == true
-
       if block_given?
         return false if yield(k)
-      elsif k.instance_of?(pattern)
+      elsif (flag = [Integer, Float, String, Numeric].include?(pattern)) || pattern.to_s.include?('?')
+        return false if check?(k, pattern, flag)
+      elsif k
         return false
       end
     end
@@ -91,8 +91,7 @@ module Enumerable
 
   def my_count(comp = nil, count = 0)
     my_each do |k|
-      count += 1 if block_given? && yield(k)
-      count += 1 if comp && k == comp
+      count += 1 if block_given? && yield(k) || comp && k == comp
     end
 
     return length if !block_given? && comp.nil?
@@ -125,40 +124,3 @@ end
 def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
-
-# a = { cat: 1, bat: 33, fat: 99 }
-# enum=a.my_each {|k,v| puts "#{k}:#{v}"}
-
-# hash = {}
-# 2a.each_with_index do |item, index|
-#  hash[item] = index
-# end
-# puts hash
-
-# print enum
-# a = (1..7)
-# range = a.each
-# print range
-# a = [1, 2, 3, 4]
-# array=a.my_each { |k| puts k }
-# print array
-
-# print(multiply_els([2, 4, 5]))
-
-# longest = %w[cat sheep bear].my_inject do |memo, word|
-# memo.length > word.length ? memo : word
-# end
-# print(longest)
-# print((5..10).my_inject(1) { |product, n| product * n} )
-# my_proc = proc { |i| i * i }
-# print((1..4).my_map(my_proc))
-# print((1..4).my_map { |i| i * i })
-
-# ary = [1, 2, 4, 2]
-# print(ary.my_count)               #=> 4
-# print(ary.my_count(2))            #=> 2
-# print(ary.my_count(&:even?))
-
-# print(%w[ant bear cat].my_none? { |word| word.length >= 5 })
-# print([1, 42].my_none?(Float))
-# print([nil].my_none?)
