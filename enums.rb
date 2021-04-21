@@ -94,7 +94,7 @@ module Enumerable
       count += 1 if block_given? && yield(k) || comp && k == comp
     end
 
-    return length if !block_given? && comp.nil?
+    return to_a.length if !block_given? && comp.nil?
 
     count
   end
@@ -124,3 +124,9 @@ end
 def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
+
+ary = (1..5)
+a = ary.count               #=> 4
+b = ary.count(2)            #=> 2
+c = ary.count(&:even?) #=> 3
+print a, b, c
