@@ -107,17 +107,17 @@ module Enumerable
     mem
   end
 
-  def my_map(my_proc = nil, index = 0)
-    my_each do |i|
+  def my_map(my_proc = nil)
+    arr = Array.new(to_a.length)
+    to_a.my_each_with_index do |item, index|
       if my_proc
-        to_a[index] = my_proc.call(i)
-      elsif block_given?
-        to_a[index] = yield(i)
+        arr[index] = my_proc.call(item)
+      else
+        arr[index] = yield(item) if block_given?
+        return to_enum unless block_given?
       end
-
-      index += 1
     end
-    to_a
+    arr
   end
 end
 
@@ -125,8 +125,7 @@ def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
 
-ary = (1..5)
-a = ary.count               #=> 4
-b = ary.count(2)            #=> 2
-c = ary.count(&:even?) #=> 3
-print a, b, c
+z = [1, 2, 3, 4, 5]
+x = z.map { |i| i * i }
+print x
+print z
