@@ -39,23 +39,6 @@ module Enumerable
     arr
   end
 
-  def my_any?(pattern = Integer, bar: false)
-    return false if length.zero?
-
-    if block_given? == false && pattern == Integer
-
-      bar = true
-    else
-
-      my_each do |k|
-        bar = true if k.instance_of?(pattern) || yield(k)
-      end
-
-    end
-
-    bar
-  end
-
   def check?(value, pattern, flag = nil)
     if flag
       return true if value.instance_of?(pattern)
@@ -67,18 +50,30 @@ module Enumerable
     false
   end
 
-  def my_all?(pattern: false, flag: false)
+  def my_all?(pattern = nil, flag: false)
     my_each do |k|
       return false unless k
 
       if block_given?
         return false unless yield(k)
       elsif (flag = [Integer, Float, String, Numeric].include?(pattern)) || pattern.to_s.include?('?')
-        return false unless check?(flag, pattern, x)
-
+        return false unless check?(k, pattern, flag)
       end
     end
     true
+  end
+
+  def my_any?(pattern = nil, flag: false)
+    my_each do |k|
+      if block_given?
+        return true if yield(k)
+      elsif (flag = [Integer, Float, String, Numeric].include?(pattern)) || pattern.to_s.include?('?')
+        return true if check?(k, pattern, flag)
+      elsif k
+        return true
+      end
+    end
+    false
   end
 
   def my_none?(pattern = Integer)
@@ -114,31 +109,22 @@ module Enumerable
   end
 
   def my_map(my_proc = nil, index = 0)
-    arr = to_a
     my_each do |i|
       if my_proc
-        arr[index] = my_proc.call(i)
+        to_a[index] = my_proc.call(i)
       elsif block_given?
-        arr[index] = yield(i)
+        to_a[index] = yield(i)
       end
 
       index += 1
     end
-    arr
+    to_a
   end
 end
 
 def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
-
-x = %w[ant bear cat].all? { |word| word.length >= 3 } #=> true
-y = %w[ant bear cat].all? { |word| word.length >= 4 } #=> false
-z = %w[ant bear cat].all?(/t/)                        #=> false
-a = [1, 2i, 3.14].all?(Numeric)                       #=> true
-b = [nil, true, 99].all?                              #=> false
-c = [].all?
-print x, y, z, a, b, c
 
 # a = { cat: 1, bat: 33, fat: 99 }
 # enum=a.my_each {|k,v| puts "#{k}:#{v}"}
