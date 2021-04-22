@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# module enumerable
 module Enumerable
   #:nodoc:
   def my_each(index = 0)
@@ -99,11 +98,20 @@ module Enumerable
     count
   end
 
-  def my_inject(mem = 0)
-    my_each do |k|
-      mem = mem.to_s if k.instance_of?(String)
-      mem = yield(mem, k)
+  def my_inject(vos = nil, ops = nil)
+    mem = vos.public_send(ops, to_a[0]) if ops
+    arr = to_a
+    my_each_with_index do |k, i|
+      mem = to_a[0] if i.zero?
+      if ['+', '-', '/', '*'].include?(vos.to_s)
+        mem = mem.public_send(vos, arr[i + 1]) if i < arr.to_a.length - 1
+      elsif ops
+        mem = mem.public_send(ops, arr.to_a[i + 1]) if i < arr.to_a.length - 1
+
+      end
+      mem = yield(mem, k) if block_given?
     end
+    mem = yield(mem, vos) if block_given? && vos
     mem
   end
 
@@ -125,7 +133,5 @@ def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
 
-z = [1, 2, 3, 4, 5]
-x = z.map { |i| i * i }
+x=[1,2,3,4].inject(:*)
 print x
-print z
