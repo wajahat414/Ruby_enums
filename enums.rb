@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 # rubocop: disable Metrics/ModuleLength
 # rubocop: disable Metrics/AbcSize
