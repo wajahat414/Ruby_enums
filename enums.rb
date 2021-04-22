@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+# rubocop: disable Metrics/ModuleLength
+# rubocop: disable Metrics/AbcSize
+
+# rubocop: disable Metrics/CyclomaticComplexity
+# rubocop: disable Metrics/PerceivedComplexity
+# rubocop: disable Metrics/MethodLength
+# Description/Explanation of module enums
 module Enumerable
   #:nodoc:
   def my_each(index = 0)
@@ -133,5 +140,8 @@ def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
 
-x=[1,2,3,4].inject(:*)
-print x
+# rubocop: enable Metrics/ModuleLength
+# rubocop: enable Metrics/AbcSize
+# rubocop: enable Metrics/CyclomaticComplexity
+# rubocop: enable Metrics/PerceivedComplexity
+# rubocop: enable Metrics/MethodLength
