@@ -1,9 +1,5 @@
-# frozen_string_literal: true
 
-# rubocop: disable Metrics/ModuleLength
-
-# rubocop: disable Metrics/CyclomaticComplexity
-# rubocop: disable Metrics/PerceivedComplexity
+# rubocop: disable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength
 
 # Description/Explanation of module enums
 module Enumerable
@@ -104,8 +100,6 @@ module Enumerable
     count
   end
 
-  # rubocop: disable Metrics/AbcSize
-  # rubocop: disable Metrics/MethodLength
   def my_inject(vos = nil, ops = nil)
     mem = vos.public_send(ops, to_a[0]) if ops
     arr = to_a
@@ -122,8 +116,6 @@ module Enumerable
     mem = yield(mem, vos) if block_given? && vos
     mem
   end
-  # rubocop: enable Metrics/AbcSize
-  # rubocop: enable Metrics/MethodLength
 
   def my_map(my_proc = nil)
     arr = Array.new(to_a.length)
@@ -142,8 +134,4 @@ end
 def multiply_els(arr)
   arr.my_inject(1) { |product, n| product * n }
 end
-
-# rubocop: enable Metrics/ModuleLength
-
-# rubocop: enable Metrics/CyclomaticComplexity
-# rubocop: enable Metrics/PerceivedComplexity
+# rubocop: enable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/MethodLength
