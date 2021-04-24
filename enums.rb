@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # rubocop: disable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
 # Description/Explanation of module enums
