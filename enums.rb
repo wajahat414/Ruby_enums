@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop: disable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
 # Description/Explanation of module enums
@@ -131,7 +133,6 @@ module Enumerable
 end
 
 def multiply_els(arr)
-  arr.my_inject (:*)
+  arr.my_inject(:*)
 end
 # rubocop: enable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-puts multiply_els([2, 4, 5])
