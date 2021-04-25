@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop: disable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
 # Description/Explanation of module enums
@@ -28,7 +30,7 @@ module Enumerable
 
     my_each do |k|
       if yield(k)
-        arr[i] = k
+        arr[index] = k
         index += 1
       end
     end
@@ -130,3 +132,9 @@ def multiply_els(arr)
   arr.my_inject(:*)
 end
 # rubocop: enable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+
+array = [1, 2, 3, 4, 5, 6]
+block = proc { |num| num < (0 + 9) / 2 }
+p array.select(&block) # [1, 2, 3]
+p array.my_select(&block) # Error
+print array
