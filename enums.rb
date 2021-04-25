@@ -1,15 +1,14 @@
+# frozen_string_literal: true
+
 # rubocop: disable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
 # Description/Explanation of module enums
 module Enumerable
   #:nodoc:
-  def my_each(index = 0)
+  def my_each(_block = 0, index = 0)
     return to_enum unless block_given?
 
     while index < to_a.length
-      if instance_of?(Hash)
-        yield(keys[index], values[index])
-      else
         yield(to_a[index])
       end
       index += 1
