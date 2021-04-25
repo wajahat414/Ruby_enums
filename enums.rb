@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # rubocop: disable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
 # Description/Explanation of module enums
@@ -9,8 +7,7 @@ module Enumerable
     return to_enum unless block_given?
 
     while index < to_a.length
-        yield(to_a[index])
-      end
+      yield(to_a[index])
       index += 1
     end
     self
