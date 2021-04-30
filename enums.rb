@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # rubocop: disable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
 # Description/Explanation of module enums
@@ -67,9 +65,9 @@ module Enumerable
     my_each do |k|
       if block_given?
         return true if yield(k)
-      elsif (flag = [Integer, Float, String, Numeric].include?(pattern)) || pattern.to_s.include?('?')
+      elsif (flag = [Integer, Float, String, Numeric].include?(pattern))
         return true if check?(k, pattern, flag)
-      elsif k
+      elsif pattern.to_s.include?(k.to_s)
         return true
       end
     end
@@ -135,5 +133,5 @@ def multiply_els(arr)
 end
 # rubocop: enable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
-p [3, 3, 3, 3, 4].all?(3) # false
-p [3, 3, 3, 3, 4].my_all?(3) # true
+p %w[dog door rod blade].any?('test') # false
+p %w[dog door rod blade].my_any?('test') # true
