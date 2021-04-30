@@ -78,9 +78,9 @@ module Enumerable
     my_each do |k|
       if block_given?
         return false if yield(k)
-      elsif (flag = [Integer, Float, String, Numeric].include?(pattern)) || pattern.to_s.include?('?')
+      elsif (flag = [Integer, Float, String, Numeric].include?(pattern))
         return false if check?(k, pattern, flag)
-      elsif k
+      elsif pattern.to_s.include?(k.to_s)
         return false
       end
     end
@@ -133,5 +133,5 @@ def multiply_els(arr)
 end
 # rubocop: enable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
-p %w[dog door rod blade].any?('test') # false
-p %w[dog door rod blade].my_any?('test') # true
+p %w[dog door rod blade].none?(5) # true
+p %w[dog door rod blade].my_none?(5) # false
