@@ -51,11 +51,12 @@ module Enumerable
   def my_all?(pattern = nil, flag: false)
     my_each do |k|
       return false unless k
-
       if block_given?
         return false unless yield(k)
-      elsif (flag = [Integer, Float, String, Numeric].include?(pattern)) || pattern.to_s.include?('?')
+      elsif (flag = [Integer, Float, String, Numeric].include?(pattern))
         return false unless check?(k, pattern, flag)
+      else
+       return false unless pattern.to_s.include?(k.to_s)
       end
     end
     true
@@ -133,8 +134,5 @@ def multiply_els(arr)
 end
 # rubocop: enable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
-array = [1, 2, 3, 4, 5, 6]
-block = proc { |num| num < (0 + 9) / 2 }
-p array.select(&block) # [1, 2, 3]
-p array.my_select(&block) # Error
-print array
+p [3,3,3,3,4].all?(3) # false
+p [3,3,3,3,4].my_all?(3) # true
