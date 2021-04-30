@@ -108,9 +108,10 @@ module Enumerable
         mem = mem.public_send(ops, arr.to_a[i + 1]) if i < arr.to_a.length - 1
 
       end
-      mem = yield(mem, k) if block_given?
+      mem = yield(mem, k) if block_given? && !i.zero?
     end
     mem = yield(mem, vos) if block_given? && vos
+    yield unless block_given? || vos
     mem
   end
 
@@ -132,6 +133,3 @@ def multiply_els(arr)
   arr.my_inject(:*)
 end
 # rubocop: enable Metrics/ModuleLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-
-p %w[dog door rod blade].none?(5) # true
-p %w[dog door rod blade].my_none?(5) # false
