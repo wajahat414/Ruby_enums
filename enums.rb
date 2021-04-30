@@ -101,7 +101,7 @@ module Enumerable
     mem = vos.public_send(ops, to_a[0]) if ops
     arr = to_a
     my_each_with_index do |k, i|
-      mem = to_a[0] if i.zero?
+      mem = to_a[0] if i.zero? && !ops
       if ['+', '-', '/', '*'].include?(vos.to_s)
         mem = mem.public_send(vos, arr[i + 1]) if i < arr.to_a.length - 1
       elsif ops
